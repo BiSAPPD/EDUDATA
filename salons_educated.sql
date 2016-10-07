@@ -89,7 +89,7 @@ left join
                 When 'loreal' then 1
                 When 'matrix' then 5
                 When 'luxe' then 6
-                When 'redken' then 7a
+                When 'redken' then 7
                 When 'essie' then 3
                 End)
 	and 
