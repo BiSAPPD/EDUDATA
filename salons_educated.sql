@@ -7,35 +7,66 @@ sln.com_mreg as com_MREG,
 
 (select Count( distinct usr.id ) from  seminar_users as smu
     left join users as usr on usr.id = smu.user_id 
-    left join seminars as smr on smu.seminar_id = smr.id and smr.closed_at is not Null
-where sln.id = usr.salon_id  or sln.salon_manager_id = usr.id) as "U_ALLTIME",
-
+    left join seminars as smr on smu.seminar_id = smr.id
+where sln.id = usr.salon_id  or sln.salon_manager_id = usr.id  and smr.closed_at is not Null) as "unqUSR_ALLTIME",
  
-(select Count( distinct usr.id ) from  seminar_users as smu
-    left join users as usr on usr.id = smu.user_id 
-    left join seminars as smr on smu.seminar_id = smr.id and extract(year from smr.started_at) = '2015' and smr.closed_at is not Null
-where sln.id = usr.salon_id or sln.salon_manager_id = usr.id) as "U_2015",
+(select Count( distinct usr.id ) from  seminars as smr
+    left join seminar_users as smu on smu.seminar_id = smr.id 
+    left join users as usr on smu.user_id  = usr.id 
+
+where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id) and extract(year from smr.started_at) = '2015' and smr.closed_at is not Null) as "unqUSR_2015",
 
 (select Count( distinct usr.id ) from  seminar_users as smu
     left join users as usr on usr.id = smu.user_id 
-    left join seminars as smr on smu.seminar_id = smr.id and extract(year from smr.started_at) = '2016' and smr.closed_at is not Null
-where sln.id = usr.salon_id or sln.salon_manager_id = usr.id ) as "U_2016",
+    left join seminars as smr on smu.seminar_id = smr.id
+where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id ) and extract(year from smr.started_at) = '2016' and smr.closed_at is not Null) as "unqUSR_2016",
 
 (select Count(usr.id ) from  seminar_users as smu
     left join users as usr on usr.id = smu.user_id
-    left join seminars as smr on smu.seminar_id = smr.id and  smr.closed_at is not Null
-where sln.id = usr.salon_id  or sln.salon_manager_id = usr.id ) as "C_ALLTIME",
-
+    left join seminars as smr on smu.seminar_id = smr.id
+    where (sln.id = usr.salon_id  or sln.salon_manager_id = usr.id )and  smr.closed_at is not Null) as "CNT_ALLTIME",
  
 (select Count( usr.id ) from  seminar_users as smu
     left join users as usr on usr.id = smu.user_id 
-    left join seminars as smr on smu.seminar_id = smr.id and extract(year from smr.started_at) = '2015' and smr.closed_at is not Null
-where sln.id = usr.salon_id or sln.salon_manager_id = usr.id ) as "C_2015",
+    left join seminars as smr on smu.seminar_id = smr.id
+where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id)  and extract(year from smr.started_at) = '2015' and smr.closed_at is not Null) as "CNT_2015",
 
 (select Count( usr.id ) from  seminar_users as smu
     left join users as usr on usr.id = smu.user_id 
-    left join seminars as smr on smu.seminar_id = smr.id and extract(year from smr.started_at) = '2016' and smr.closed_at is not Null
-where sln.id = usr.salon_id or sln.salon_manager_id = usr.id ) as "C_2016",
+    left join seminars as smr on smu.seminar_id = smr.id
+where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id)  and extract(year from smr.started_at) = '2016' and smr.closed_at is not Null) as "CNT_2016",
+
+(select Count( distinct usr.id ) from  seminars as smr
+    left join seminar_users as smu on smu.seminar_id = smr.id 
+    left join users as usr on smu.user_id  = usr.id
+    left join seminar_types as smt  ON smr.seminar_type_id = smt.id
+where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id) and extract(year from smr.started_at) = '2015' and smr.closed_at is not Null and smt.kpis_type in ('Seminars in Salon','Paid Seminars in Studio', 'Free Seminars in Studio')) as "unqUSR_2015_exclCNSLT",
+
+(select Count( distinct usr.id ) from  seminar_users as smu
+    left join users as usr on usr.id = smu.user_id 
+    left join seminars as smr on smu.seminar_id = smr.id	
+    left join seminar_types as smt ON smr.seminar_type_id = smt.id
+where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id ) and extract(year from smr.started_at) = '2016' and smr.closed_at is not Null and smt.kpis_type in ('Seminars in Salon','Paid Seminars in Studio', 'Free Seminars in Studio')) as "unqUSR_2016_exclCNSLT",
+
+(select Count(usr.id ) from  seminar_users as smu
+    left join users as usr on usr.id = smu.user_id
+    left join seminars as smr on smu.seminar_id = smr.id
+    left join seminar_types as smt ON  smr.seminar_type_id = smt.id
+    where (sln.id = usr.salon_id  or sln.salon_manager_id = usr.id )and  smr.closed_at is not Null and smt.kpis_type in ('Seminars in Salon','Paid Seminars in Studio', 'Free Seminars in Studio')) as "CNT_ALLTIME_exclCNSLT",
+ 
+(select Count( usr.id ) from  seminar_users as smu
+    left join users as usr on usr.id = smu.user_id 
+    left join seminars as smr on smu.seminar_id = smr.id
+    left join seminar_types as smt ON smr.seminar_type_id = smt.ida
+where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id)  and extract(year from smr.started_at) = '2015' and smr.closed_at is not Null and smt.kpis_type in ('Seminars in Salon','Paid Seminars in Studio', 'Free Seminars in Studio')) as "CNT_2015_exclCNSLT",
+
+(select Count( usr.id ) from  seminar_users as smu
+    left join users as usr on usr.id = smu.user_id 
+    left join seminars as smr on smu.seminar_id = smr.id
+    left join seminar_types as smt ON smr.seminar_type_id = smt.id
+where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id)  and extract(year from smr.started_at) = '2016' and smr.closed_at is not Null and smt.kpis_type in ('Seminars in Salon','Paid Seminars in Studio', 'Free Seminars in Studio')) as "CNT_2016_exclCNSLT",
+
+
 
 (select Count( usr.id ) from users as usr
 where sln.id = usr.salon_id ) as "Count_SLN_USRs",
