@@ -57,7 +57,7 @@ where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id ) and extract(year
 (select Count( usr.id ) from  seminar_users as smu
     left join users as usr on usr.id = smu.user_id 
     left join seminars as smr on smu.seminar_id = smr.id
-    left join seminar_types as smt ON smr.seminar_type_id = smt.ida
+    left join seminar_types as smt ON smr.seminar_type_id = smt.id
 where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id)  and extract(year from smr.started_at) = '2015' and smr.closed_at is not Null and smt.kpis_type in ('Seminars in Salon','Paid Seminars in Studio', 'Free Seminars in Studio')) as "CNT_2015_exclCNSLT",
 
 (select Count( usr.id ) from  seminar_users as smu

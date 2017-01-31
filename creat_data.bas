@@ -1,3 +1,21 @@
+Attribute VB_Name = "creat_ecad_data"
+
+Sub creat_data()
+
+Dim FilePatch As String
+Dim ar_Data_EDU(), ar_Data_TR(), ar_JoinData()
+Dim xxx As Integer
+Dim patchTR$, nmBrand$, nm_Mreg$, nm_Sector$, nm_Mreg_ext$, nm_month_qnc$, nm_business$, nm_Salon$, nm_Salon_addr$, nm_Salon_city$, type_sln_rus$
+Dim mag_min_price&, mag_max_price&, mag_hd_place&, ThisYear&, cd_year_qnc&, num_month&, sts_dn_cln&, cd_month_qnc&
+Dim min_price As Variant, max_price As Variant
+
+myLib.VBA_Start
+
+ar_brand = Array("MX", "LP", "KR", "RD", "ES")
+num_ar_brand = UBound(ar_brand)
+ThisYear = 2016
+in_data_EDU = "Educated"
+yyy = 2
 Sub creat_data()
 
 Dim FilePatch As String
@@ -15,15 +33,15 @@ ThisYear = 2016
 in_data_EDU = "Educated"
 yyy = 1
 
-EDUDATA = ActiveWorkbook.Name
+EDUDATA = ActiveWorkbook.name
 in_edudata = "in_data"
-myLib.CreateSh(in_edudata)
+myLib.CreateSh (in_edudata)
 
 For f_brand = 0 To num_ar_brand
     nmBrand = ar_brand(f_brand)
 
     patchTR = "p:\DPP\Business development\Book commercial\" & nmBrand & "\Top Russia Total " & ThisYear & " " & nmBrand & ".xlsm"
-    actTR = MyLib.openFile(patchTR, nmBrand)
+    actTR = myLib.OpenFile(patchTR, nmBrand)
 
     tr_LastRow = fn_lastRow
     tr_count_row = tr_LastRow - 3
@@ -44,7 +62,7 @@ For f_brand = 0 To num_ar_brand
         Application.StatusBar = actTR & " row: " & iii & " in: " & tr_LastRow
 
         If Application.CountA(Rows(f_i)) <> 0 Then
-            If InStr(LCase(nm_Mreg),"e-commerce") = 0 Then
+            If InStr(LCase(nm_Mreg), "e-commerce") = 0 Then
             iii = iii + 1
 
             
@@ -53,7 +71,7 @@ For f_brand = 0 To num_ar_brand
             nm_Mreg_LT = fn_mreg_lat(nm_Mreg_ext)
             nm_REG = Cells(f_i, 5)
             nm_FLSM = Cells(f_i, 165)
-            nm_SREP = Cells(f_i, 7)
+            nm_Srep = Cells(f_i, 7)
             nm_Salon = Cells(f_i, 9)
             nm_Salon_addr = Cells(f_i, 12)
             nm_Salon_city = Cells(f_i, 11)
@@ -80,37 +98,37 @@ For f_brand = 0 To num_ar_brand
             cd_Partner = Cells(f_i, 173)
             nm_SLN_ADR_CITY = fn_salon_name(nm_Salon, nm_Salon_addr, nm_Salon_city)
         
-            n = 1: ar_Data_TR(iii, n) = nmBrand: IF iii = 1 Then dic_Head add n,  "brand"
-            n = n + 1: ar_Data_TR(iii, n) = nm_Mreg: IF iii = 1 Then dic_Head add n, "mreg": clm_nm_mreg = n
-            n = n + 1: ar_Data_TR(iii, n) = nm_Mreg_LT: IF iii = 1 Then dic_Head add n, "mreg_EXT": clm_nm_mreg_ext = n
-            n = n + 1: ar_Data_TR(iii, n) = nm_REG: IF iii = 1 Then dic_Head add n, "REG"
-            n = n + 1: ar_Data_TR(iii, n) = nm_FLSM: IF iii = 1 Then dic_Head add n, "FLSM"
-            n = n + 1: ar_Data_TR(iii, n) = nm_Sector: IF iii = 1 Then dic_Head add n, "SEC"
-            n = n + 1: ar_Data_TR(iii, n) = nm_SREP: IF iii = 1 Then dic_Head add n, "SREP"
-            n = n + 1: ar_Data_TR(iii, n) = nm_SLN_ADR_CITY: IF iii = 1 Then dic_Head add n, "salon": clm_nm_salon = n
-            n = n + 1: ar_Data_TR(iii, n) = nm_Salon_city: IF iii = 1 Then dic_Head add n, "city": clm_nm_city = n
-            n = n + 1: ar_Data_TR(iii, n) = type_sln_rus: IF iii = 1 Then dic_Head add n, "type_SLN"
-            n = n + 1: ar_Data_TR(iii, n) = fn_clnt_type(type_sln_rus, 2): IF iii = 1 Then dic_Head add n, "salon_type_eng"
-            n = n + 1: ar_Data_TR(iii, n) = fn_clnt_type(type_sln_rus, 3): IF iii = 1 Then dic_Head add n, "salon_type_short_eng"
-            n = n + 1: ar_Data_TR(iii, n) = fn_clnt_type(type_sln_rus, 4): IF iii = 1 Then dic_Head add n, "salon_type_chain_eng"
-            n = n + 1: ar_Data_TR(iii, n) = nm_club_type: IF iii = 1 Then dic_Head add n, "type_CLUB"
-            n = n + 1: ar_Data_TR(iii, n) = nm_chain: IF iii = 1 Then dic_Head add n, "chain_name"
-            n = n + 1: ar_Data_TR(iii, n) = cd_month_qnc: IF iii = 1 Then dic_Head add n, "CNQ_month_num"
-            n = n + 1: ar_Data_TR(iii, n) = fn_year_cnq(ThisYear, cd_year_qnc, 2): IF iii = 1 Then dic_Head add n, "CNQ_year"
-            n = n + 1: ar_Data_TR(iii, n) = fn_quartal(cd_month_qnc): IF iii = 1 Then dic_Head add n, "cnq_Quarter"
-            n = n + 1: ar_Data_TR(iii, n) = vl_mag: IF iii = 1 Then dic_Head add n, "type_MAG"
-            n = n + 1: ar_Data_TR(iii, n) = fn_type_active_DN(sts_dn_cln): IF iii = 1 Then dic_Head add n, "status_DN_name"
-            n = n + 1: ar_Data_TR(iii, n) = id_ECAD: IF iii = 1 Then dic_Head add n, "EDU_id_ECAD": clm_id_ecad = n
-            n = n + 1: ar_Data_TR(iii, n) = mag_hd_place: IF iii = 1 Then dic_Head add n, "_place_HD"
-            n = n + 1: ar_Data_TR(iii, n) = cnt_AVG_HD: IF iii = 1 Then dic_Head add n, "cnt_AVG_HD"
-            n = n + 1: ar_Data_TR(iii, n) = nm_Partners: IF iii = 1 Then dic_Head add n, "nm_partner"
-            n = n + 1: ar_Data_TR(iii, n) = cd_Partner: IF iii = 1 Then dic_Head add n, "cd_partner"
-            n = n + 1: ar_Data_TR(iii, n) = Empty: IF iii = 1 Then dic_Head add n, "status_link": status_link = n
-            n = n + 1: ar_Data_TR(iii, n) = Empty: IF iii = 1 Then dic_Head add n, "status_educated": n_status_educated = n
+            n = 1: ar_Data_TR(iii, n) = nmBrand: If iii = 1 Then dic_Head.Add n, "brand"
+            n = n + 1: ar_Data_TR(iii, n) = nm_Mreg: If iii = 1 Then dic_Head.Add n, "mreg": clm_nm_mreg = n
+            n = n + 1: ar_Data_TR(iii, n) = nm_Mreg_LT: If iii = 1 Then dic_Head.Add n, "mreg_EXT": clm_nm_mreg_ext = n
+            n = n + 1: ar_Data_TR(iii, n) = nm_REG: If iii = 1 Then dic_Head.Add n, "REG"
+            n = n + 1: ar_Data_TR(iii, n) = nm_FLSM: If iii = 1 Then dic_Head.Add n, "FLSM"
+            n = n + 1: ar_Data_TR(iii, n) = nm_Sector: If iii = 1 Then dic_Head.Add n, "SEC"
+            n = n + 1: ar_Data_TR(iii, n) = nm_Srep: If iii = 1 Then dic_Head.Add n, "SREP"
+            n = n + 1: ar_Data_TR(iii, n) = nm_SLN_ADR_CITY: If iii = 1 Then dic_Head.Add n, "salon": clm_nm_salon = n
+            n = n + 1: ar_Data_TR(iii, n) = nm_Salon_city: If iii = 1 Then dic_Head.Add n, "city": clm_nm_city = n
+            n = n + 1: ar_Data_TR(iii, n) = type_sln_rus: If iii = 1 Then dic_Head.Add n, "type_SLN"
+            n = n + 1: ar_Data_TR(iii, n) = fn_clnt_type(type_sln_rus, 2): If iii = 1 Then dic_Head.Add n, "salon_type_eng"
+            n = n + 1: ar_Data_TR(iii, n) = fn_clnt_type(type_sln_rus, 3): If iii = 1 Then dic_Head.Add n, "salon_type_short_eng"
+            n = n + 1: ar_Data_TR(iii, n) = fn_clnt_type(type_sln_rus, 4): If iii = 1 Then dic_Head.Add n, "salon_type_chain_eng"
+            n = n + 1: ar_Data_TR(iii, n) = nm_club_type: If iii = 1 Then dic_Head.Add n, "type_CLUB"
+            n = n + 1: ar_Data_TR(iii, n) = nm_chain: If iii = 1 Then dic_Head.Add n, "chain_name"
+            n = n + 1: ar_Data_TR(iii, n) = cd_month_qnc: If iii = 1 Then dic_Head.Add n, "CNQ_month_num"
+            n = n + 1: ar_Data_TR(iii, n) = fn_year_cnq(ThisYear, cd_year_qnc, 2): If iii = 1 Then dic_Head.Add n, "CNQ_year"
+            n = n + 1: ar_Data_TR(iii, n) = fn_quartal(cd_month_qnc): If iii = 1 Then dic_Head.Add n, "cnq_Quarter"
+            n = n + 1: ar_Data_TR(iii, n) = vl_mag: If iii = 1 Then dic_Head.Add n, "type_MAG"
+            n = n + 1: ar_Data_TR(iii, n) = fn_type_active_DN(sts_dn_cln): If iii = 1 Then dic_Head.Add n, "status_DN_name"
+            n = n + 1: ar_Data_TR(iii, n) = id_ECAD: If iii = 1 Then dic_Head.Add n, "EDU_id_ECAD": clm_id_ecad = n
+            n = n + 1: ar_Data_TR(iii, n) = mag_hd_place: If iii = 1 Then dic_Head.Add n, "_place_HD"
+            n = n + 1: ar_Data_TR(iii, n) = cnt_AVG_HD: If iii = 1 Then dic_Head.Add n, "cnt_AVG_HD"
+            n = n + 1: ar_Data_TR(iii, n) = nm_Partners: If iii = 1 Then dic_Head.Add n, "nm_partner"
+            n = n + 1: ar_Data_TR(iii, n) = cd_Partner: If iii = 1 Then dic_Head.Add n, "cd_partner"
+            n = n + 1: ar_Data_TR(iii, n) = Empty: If iii = 1 Then dic_Head.Add n, "status_link": status_link = n
+            n = n + 1: ar_Data_TR(iii, n) = Empty: If iii = 1 Then dic_Head.Add n, "status_educated": n_status_educated = n
 
             If Not dic_idECAD.Exists(id_ECAD) Then dic_idECAD.Add id_ECAD, id_ECAD
-            If Not dic_City.Exists(nm_Salon_city) And Not IsEmpty(nm_Salon_city) Then dic_City.add n,m_Salon_city, nm_Mreg_LT
-            If Not dic_Sec.Exists(nm_Sector) And Not IsEmpty(nm_Sector) Then dic_Sec.add n,m_Sector, nm_Mreg_LT
+            If Not dic_City.Exists(nm_Salon_city) And Not IsEmpty(nm_Salon_city) Then dic_City.Add nm_Salon_city, nm_Mreg_LT
+            If Not dic_Sec.Exists(nm_Sector) And Not IsEmpty(nm_Sector) Then dic_Sec.Add nm_Sector, nm_Mreg_LT
             
             End If
         End If
@@ -126,7 +144,7 @@ For f_brand = 0 To num_ar_brand
     Application.StatusBar = False
     Application.StatusBar = "Work file is: " & actEDUBook
 
-    edu_LastRow = ActiveSheet.UsedRange.Row + ActiveSheet.UsedRange.Rows.Count - 1
+    edu_LastRow = ActiveSheet.UsedRange.row + ActiveSheet.UsedRange.Rows.Count - 1
     edu_LastColumn = ActiveSheet.UsedRange.Column + ActiveSheet.UsedRange.Columns.Count - 1
 
     ReDim ar_Data_EDU(1 To edu_LastRow, 1 To edu_LastColumn)
@@ -266,7 +284,7 @@ For f_brand = 0 To num_ar_brand
     Application.StatusBar = False
     Application.StatusBar = "TR fill EDUCATED"
     ActiveSheet.UsedRange.Cells.ClearContents
-    ActiveSheet.Cells(1, 1).Resize(iii - start_row, n + edu_LastColumn) = ar_JoinData
+    ActiveSheet.Cells(2, 1).Resize(iii - start_row, n + edu_LastColumn) = ar_JoinData
     Cells(1, 1).Select
     Selection.AutoFilter
 
@@ -284,11 +302,11 @@ For f_brand = 0 To num_ar_brand
     Sheets(in_edudata).Select
 
     Select Case f_brand
-    Case 0
-    ActiveSheet.UsedRange.Cells.ClearContents
-    strt_jd_rw = 1
-    Case Else
-    strt_jd_rw = 2
+        Case 0
+            ActiveSheet.UsedRange.Cells.ClearContents
+            strt_jd_rw = 1
+        Case Else
+            strt_jd_rw = 2
     End Select
 
 
@@ -305,6 +323,7 @@ Next f_brand
 fn_VBA_End
     
 End Sub
+
 
 
 
