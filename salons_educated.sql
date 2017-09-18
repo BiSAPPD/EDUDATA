@@ -146,7 +146,8 @@ where (sln.id = usr.salon_id or sln.salon_manager_id = usr.id)  and extract(year
 	
 
 
-(select Count( usr.id ) from users as usr
+(select Count( us
+r.id ) from users as usr
 where sln.id = usr.salon_id ) as "Count_SLN_USRs",
 
 (select Count( usr.id ) from users as usr
